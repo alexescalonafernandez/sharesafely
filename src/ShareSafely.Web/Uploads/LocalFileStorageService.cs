@@ -44,12 +44,8 @@ public class LocalFileStorageService : IFileStorageService
                 return false;
             }
 
-            // Ensure the path is rooted (absolute path)
-            if (!Path.IsPathRooted(path))
-            {
-                return false;
-            }
-
+            // Try resolve the path
+            _ = Path.GetFullPath(path);
             return true;
         }
         catch
@@ -78,7 +74,7 @@ public class LocalFileStorageService : IFileStorageService
             var safeFileName = $"{Guid.NewGuid:N}{originalExtension}";
 
             // Ensure the target directory exists
-            var storagePath = _options.LocalStoragePath;
+            var storagePath = Path.GetFullPath(_options.LocalStoragePath);
             if (!Directory.Exists(storagePath))
             {
                 Directory.CreateDirectory(storagePath);
