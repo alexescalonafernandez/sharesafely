@@ -1,10 +1,67 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "ShareSafely - Upload";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4">ShareSafely Upload</h2>
+
+                    <!-- Success Message -->
+                    @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+                    {
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <strong>Success!</strong> @Model.SuccessMessage
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+
+                    <!-- Validation Errors -->
+                    @if (Model.ValidationErrors.Any())
+                    {
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            <strong>Validation Failed:</strong>
+                            <ul class="mb-0 mt-2">
+                                @foreach (var error in Model.ValidationErrors)
+                                {
+                                    <li>@error</li>
+                                }
+                            </ul>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+
+                    <!-- Storage Errors -->
+                    @if (Model.StorageErrors.Any())
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>Storage Error:</strong>
+                            <ul class="mb-0 mt-2">
+                                @foreach (var error in Model.StorageErrors)
+                                {
+                                    <li>@error</li>
+                                }
+                            </ul>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+
+                    <!-- Upload Form -->
+                    <form method="post" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="UploadedFile" class="form-label">Select File to Upload</label>
+                            <input type="file" class="form-control" id="UploadedFile" name="UploadedFile" required>
+                            <small class="form-text text-muted">Maximum file size: 5 MB. Allowed types: PDF, TXT, PNG, JPG, JPEG.</small>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">Upload File</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

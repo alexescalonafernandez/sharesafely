@@ -11,6 +11,10 @@ var uploadOptions = builder.Configuration
     ?? throw new InvalidOperationException("Upload configuration is missing.");
 
 builder.Services.AddSingleton(uploadOptions);
+builder.Services.Configure<UploadOptions>(
+    builder.Configuration.GetSection("Upload")
+);
+
 builder.Services.AddSingleton<FileUploadValidator>();
 builder.Services.AddScoped<IFileStorageService, LocalFileStorageService>();
 
