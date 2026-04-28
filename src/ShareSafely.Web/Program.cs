@@ -1,7 +1,18 @@
+using ShareSafely.Web.Uploads;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+var uploadOptions = builder.Configuration
+    .GetSection("Upload")
+    .Get<UploadOptions>()
+    ?? throw new InvalidOperationException("Upload configuration is missing.");
+
+builder.Services.AddSingleton(uploadOptions);
+builder.Services.AddSingleton<FileUploadValidator>();
+builder.Services.AddScoped<IFileStorageService, LocalFileStorageService>();
 
 var app = builder.Build();
 
