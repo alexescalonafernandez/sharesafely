@@ -71,7 +71,7 @@ public class LocalFileStorageService : IFileStorageService
 
             // Generate a safe file name using a GUID and preserve the original extension
             var originalExtension = Path.GetExtension(file.FileName);
-            var safeFileName = $"{Guid.NewGuid:N}{originalExtension}";
+            var safeFileName = $"{Guid.NewGuid():N}{originalExtension}";
 
             // Ensure the target directory exists
             var storagePath = Path.GetFullPath(_options.LocalStoragePath);
