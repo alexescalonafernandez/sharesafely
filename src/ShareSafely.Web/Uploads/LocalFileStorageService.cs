@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Options;
+
 namespace ShareSafely.Web.Uploads;
 
 /// <summary>
@@ -12,20 +14,20 @@ public class LocalFileStorageService : IFileStorageService
     /// </summary>
     /// <param name="options">Configuration options for file storage.</param>
     /// <exception cref="ArgumentException">Thrown if LocalStoragePath is not configured or is not a valid directory path.</exception>
-    public LocalFileStorageService(UploadOptions options)
+    public LocalFileStorageService(IOptions<UploadOptions> options)
     {
-        if (string.IsNullOrWhiteSpace(options.LocalStoragePath))
+        _options = options.Value;
+
+        if (string.IsNullOrWhiteSpace(_options.LocalStoragePath))
         {
             throw new ArgumentException("LocalStoragePath must be configured.", nameof(options));
         }
 
         // Validate that LocalStoragePath is a valid possible directory path
-        if (!IsValidDirectoryPath(options.LocalStoragePath))
+        if (!IsValidDirectoryPath(_options.LocalStoragePath))
         {
             throw new ArgumentException("LocalStoragePath must be a valid directory path.", nameof(options));
         }
-
-        _options = options;
     }
 
     /// <summary>

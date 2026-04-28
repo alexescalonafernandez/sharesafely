@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
 using ShareSafely.Web.Uploads;
 
 namespace ShareSafely.Web.Tests.Uploads;
@@ -56,7 +57,7 @@ public class LocalFileStorageServiceTests
         var options = new UploadOptions { LocalStoragePath = null! };
 
         // Act & Assert
-        var exception = Assert.Throws<ArgumentException>(() => new LocalFileStorageService(options));
+        var exception = Assert.Throws<ArgumentException>(() => new LocalFileStorageService(Options.Create(options)));
         Assert.Contains("LocalStoragePath must be configured", exception.Message);
     }
 
@@ -67,7 +68,7 @@ public class LocalFileStorageServiceTests
         var options = new UploadOptions { LocalStoragePath = string.Empty };
 
         // Act & Assert
-        var exception = Assert.Throws<ArgumentException>(() => new LocalFileStorageService(options));
+        var exception = Assert.Throws<ArgumentException>(() => new LocalFileStorageService(Options.Create(options)));
         Assert.Contains("LocalStoragePath must be configured", exception.Message);
     }
 
@@ -78,7 +79,7 @@ public class LocalFileStorageServiceTests
         var options = new UploadOptions { LocalStoragePath = "   " };
 
         // Act & Assert
-        var exception = Assert.Throws<ArgumentException>(() => new LocalFileStorageService(options));
+        var exception = Assert.Throws<ArgumentException>(() => new LocalFileStorageService(Options.Create(options)));
         Assert.Contains("LocalStoragePath must be configured", exception.Message);
     }
 
@@ -95,7 +96,7 @@ public class LocalFileStorageServiceTests
         {
             Directory.CreateDirectory(tempDir);
             var options = new UploadOptions { LocalStoragePath = tempDir };
-            var service = new LocalFileStorageService(options);
+            var service = new LocalFileStorageService(Options.Create(options));
 
             // Act
             var result = await service.StoreFileAsync(null!);
@@ -126,7 +127,7 @@ public class LocalFileStorageServiceTests
             Assert.False(Directory.Exists(tempDir));
 
             var options = new UploadOptions { LocalStoragePath = tempDir };
-            var service = new LocalFileStorageService(options);
+            var service = new LocalFileStorageService(Options.Create(options));
             var file = CreateFormFile("test.txt", "test content");
 
             // Act
@@ -155,7 +156,7 @@ public class LocalFileStorageServiceTests
         {
             Directory.CreateDirectory(tempDir);
             var options = new UploadOptions { LocalStoragePath = tempDir };
-            var service = new LocalFileStorageService(options);
+            var service = new LocalFileStorageService(Options.Create(options));
             var fileContent = "test file content";
             var file = CreateFormFile("test.txt", fileContent);
 
@@ -189,7 +190,7 @@ public class LocalFileStorageServiceTests
         {
             Directory.CreateDirectory(tempDir);
             var options = new UploadOptions { LocalStoragePath = tempDir };
-            var service = new LocalFileStorageService(options);
+            var service = new LocalFileStorageService(Options.Create(options));
             var originalFileName = "test.txt";
             var file = CreateFormFile(originalFileName, "test content");
 
@@ -215,7 +216,7 @@ public class LocalFileStorageServiceTests
         {
             Directory.CreateDirectory(tempDir);
             var options = new UploadOptions { LocalStoragePath = tempDir };
-            var service = new LocalFileStorageService(options);
+            var service = new LocalFileStorageService(Options.Create(options));
             var originalFileName = "document.pdf";
             var file = CreateFormFile(originalFileName, "test content");
 
@@ -247,7 +248,7 @@ public class LocalFileStorageServiceTests
         {
             Directory.CreateDirectory(tempDir);
             var options = new UploadOptions { LocalStoragePath = tempDir };
-            var service = new LocalFileStorageService(options);
+            var service = new LocalFileStorageService(Options.Create(options));
             var file = CreateFormFile(fileName, "test content");
 
             // Act
@@ -278,7 +279,7 @@ public class LocalFileStorageServiceTests
         {
             Directory.CreateDirectory(tempDir);
             var options = new UploadOptions { LocalStoragePath = tempDir };
-            var service = new LocalFileStorageService(options);
+            var service = new LocalFileStorageService(Options.Create(options));
             var originalFileName = "myfile.txt";
             var file = CreateFormFile(originalFileName, "test content");
 
@@ -304,7 +305,7 @@ public class LocalFileStorageServiceTests
         {
             Directory.CreateDirectory(tempDir);
             var options = new UploadOptions { LocalStoragePath = tempDir };
-            var service = new LocalFileStorageService(options);
+            var service = new LocalFileStorageService(Options.Create(options));
             var file = CreateFormFile("test.txt", "test content");
 
             // Act
@@ -330,7 +331,7 @@ public class LocalFileStorageServiceTests
         {
             Directory.CreateDirectory(tempDir);
             var options = new UploadOptions { LocalStoragePath = tempDir };
-            var service = new LocalFileStorageService(options);
+            var service = new LocalFileStorageService(Options.Create(options));
             var file = CreateFormFile("test.txt", "test content");
 
             // Act
@@ -357,7 +358,7 @@ public class LocalFileStorageServiceTests
         {
             Directory.CreateDirectory(tempDir);
             var options = new UploadOptions { LocalStoragePath = tempDir };
-            var service = new LocalFileStorageService(options);
+            var service = new LocalFileStorageService(Options.Create(options));
             var file = CreateFormFile("test.txt", "test content");
 
             // Act
@@ -396,7 +397,7 @@ public class LocalFileStorageServiceTests
             Directory.SetCurrentDirectory(tempBaseDir);
 
             var options = new UploadOptions { LocalStoragePath = relativePath };
-            var service = new LocalFileStorageService(options);
+            var service = new LocalFileStorageService(Options.Create(options));
             var file = CreateFormFile("test.txt", "test content");
 
             // Act
@@ -435,7 +436,7 @@ public class LocalFileStorageServiceTests
         {
             Directory.CreateDirectory(tempDir);
             var options = new UploadOptions { LocalStoragePath = tempDir };
-            var service = new LocalFileStorageService(options);
+            var service = new LocalFileStorageService(Options.Create(options));
 
             // Create files with fresh streams each time
             var file1Stream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes("content 1"));
@@ -474,7 +475,7 @@ public class LocalFileStorageServiceTests
         {
             Directory.CreateDirectory(tempDir);
             var options = new UploadOptions { LocalStoragePath = tempDir };
-            var service = new LocalFileStorageService(options);
+            var service = new LocalFileStorageService(Options.Create(options));
             var file = CreateFormFile("empty.txt", string.Empty);
 
             // Act
@@ -501,7 +502,7 @@ public class LocalFileStorageServiceTests
         {
             Directory.CreateDirectory(tempDir);
             var options = new UploadOptions { LocalStoragePath = tempDir };
-            var service = new LocalFileStorageService(options);
+            var service = new LocalFileStorageService(Options.Create(options));
             var file = CreateFormFile("noextension", "test content");
 
             // Act
