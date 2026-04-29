@@ -1,4 +1,8 @@
 using ShareSafely.Web.Uploads;
+using ShareSafely.Web.Uploads.Storage;
+using ShareSafely.Web.Uploads.Storage.Azure;
+using ShareSafely.Web.Uploads.Storage.Local;
+using ShareSafely.Web.Uploads.Validation;
 
 var builder = WebApplication.CreateBuilder(args);
 

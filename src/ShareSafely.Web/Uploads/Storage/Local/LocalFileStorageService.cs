@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Options;
 
-namespace ShareSafely.Web.Uploads;
+namespace ShareSafely.Web.Uploads.Storage.Local;
 
 /// <summary>
 /// Implements file storage using the local file system.

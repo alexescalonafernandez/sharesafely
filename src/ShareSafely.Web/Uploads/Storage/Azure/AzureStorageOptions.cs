@@ -1,4 +1,4 @@
-﻿namespace ShareSafely.Web.Uploads;
+﻿namespace ShareSafely.Web.Uploads.Storage.Azure;
 
 public class AzureStorageOptions
 {

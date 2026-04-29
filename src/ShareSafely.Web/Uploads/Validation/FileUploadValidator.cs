@@ -1,4 +1,4 @@
-namespace ShareSafely.Web.Uploads;
+namespace ShareSafely.Web.Uploads.Validation;
 
 /// <summary>
 /// Validates IFormFile uploads against UploadOptions constraints.

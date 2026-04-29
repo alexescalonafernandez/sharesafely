@@ -1,4 +1,4 @@
-namespace ShareSafely.Web.Uploads;
+namespace ShareSafely.Web.Uploads.Validation;
 
 /// <summary>
 /// Represents the result of a file upload validation operation.

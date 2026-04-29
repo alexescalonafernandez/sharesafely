@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using ShareSafely.Web.Uploads;
+using ShareSafely.Web.Uploads.Validation;
 
 namespace ShareSafely.Web.Tests.Uploads;
 

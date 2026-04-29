@@ -1,8 +1,9 @@
+using Azure;
 using Azure.Identity;
 using Azure.Storage.Blobs;
 using Microsoft.Extensions.Options;
 
-namespace ShareSafely.Web.Uploads;
+namespace ShareSafely.Web.Uploads.Storage.Azure;
 
 /// <summary>
 /// Implements file storage using Azure Blob Storage.
@@ -79,19 +80,19 @@ public class AzureBlobStorageService : IFileStorageService
         {
             return StoredFileResult.Failure("File storage operation was cancelled.");
         }
-        catch (Azure.RequestFailedException ex) when (ex.Status == 401)
+        catch (RequestFailedException ex) when (ex.Status == 401)
         {
             return StoredFileResult.Failure("Unauthorized: Unable to authenticate with Azure Storage.");
         }
-        catch (Azure.RequestFailedException ex) when (ex.Status == 403)
+        catch (RequestFailedException ex) when (ex.Status == 403)
         {
             return StoredFileResult.Failure("Forbidden: Insufficient permissions to upload to the blob container.");
         }
-        catch (Azure.RequestFailedException ex) when (ex.Status == 404)
+        catch (RequestFailedException ex) when (ex.Status == 404)
         {
             return StoredFileResult.Failure("Not Found: The blob container does not exist.");
         }
-        catch (Azure.RequestFailedException ex)
+        catch (RequestFailedException ex)
         {
             return StoredFileResult.Failure($"Azure Storage error: {ex.Message}");
         }

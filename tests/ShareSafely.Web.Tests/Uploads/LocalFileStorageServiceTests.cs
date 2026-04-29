@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using ShareSafely.Web.Uploads;
+using ShareSafely.Web.Uploads.Storage.Local;
 
 namespace ShareSafely.Web.Tests.Uploads;
 

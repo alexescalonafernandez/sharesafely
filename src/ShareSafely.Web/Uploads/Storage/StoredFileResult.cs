@@ -1,4 +1,4 @@
-namespace ShareSafely.Web.Uploads;
+namespace ShareSafely.Web.Uploads.Storage;
 
 /// <summary>
 /// Represents the result of a file storage operation.

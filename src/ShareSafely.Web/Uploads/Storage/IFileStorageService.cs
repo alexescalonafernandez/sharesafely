@@ -1,4 +1,4 @@
-namespace ShareSafely.Web.Uploads;
+namespace ShareSafely.Web.Uploads.Storage;
 
 /// <summary>
 /// Defines the contract for storing files in a storage backend.
