@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Options;
 using ShareSafely.Web.Uploads;
 using ShareSafely.Web.Uploads.Storage;
 using ShareSafely.Web.Uploads.Storage.Azure;
@@ -17,8 +18,26 @@ builder.Services.Configure<AzureStorageOptions>(
     builder.Configuration.GetSection("AzureStorage")
 );
 
+builder.Services.Configure<StorageOptions>(
+    builder.Configuration.GetSection("Storage")
+);
+
 builder.Services.AddSingleton<FileUploadValidator>();
-builder.Services.AddScoped<IFileStorageService, LocalFileStorageService>();
+
+builder.Services.AddScoped<LocalFileStorageService>();
+builder.Services.AddScoped<AzureBlobStorageService>();
+
+builder.Services.AddScoped<IFileStorageService>(sp =>
+{
+    var storageOptions = sp.GetRequiredService<IOptions<StorageOptions>>().Value;
+
+    return storageOptions.Provider switch
+    {
+        "Local" => sp.GetRequiredService<LocalFileStorageService>(),
+        "AzureBlob" => sp.GetRequiredService<AzureBlobStorageService>(),
+        _ => throw new InvalidOperationException($"Unsupported storage provider: {storageOptions.Provider}")
+    };
+});
 
 var app = builder.Build();
 
