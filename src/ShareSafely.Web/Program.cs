@@ -9,6 +9,10 @@ builder.Services.Configure<UploadOptions>(
     builder.Configuration.GetSection("Upload")
 );
 
+builder.Services.Configure<AzureStorageOptions>(
+    builder.Configuration.GetSection("AzureStorage")
+);
+
 builder.Services.AddSingleton<FileUploadValidator>();
 builder.Services.AddScoped<IFileStorageService, LocalFileStorageService>();
 
