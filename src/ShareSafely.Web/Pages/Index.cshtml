@@ -87,17 +87,31 @@
                     }
 
                     <!-- Upload Form -->
-                    <form method="post" enctype="multipart/form-data">
+                    <form id="uploadForm" method="post" enctype="multipart/form-data">
                         <div class="mb-3">
                             <label for="UploadedFile" class="form-label">Select File to Upload</label>
                             <input type="file" class="form-control" id="UploadedFile" name="UploadedFile" required>
                             <small class="form-text text-muted">Maximum file size: 5 MB. Allowed types: PDF, TXT, PNG, JPG, JPEG.</small>
                         </div>
 
-                        <button type="submit" class="btn btn-primary w-100">Upload File</button>
+                        <button id="uploadButton" type="submit" class="btn btn-primary w-100">Upload File</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        const uploadForm = document.getElementById('uploadForm');
+        const uploadButton = document.getElementById('uploadButton');
+
+        uploadForm?.addEventListener('submit', function () {
+            if (uploadButton) {
+                uploadButton.disabled = true;
+                uploadButton.innerText = 'Uploading...';
+            }
+        });
+    </script>
+}
