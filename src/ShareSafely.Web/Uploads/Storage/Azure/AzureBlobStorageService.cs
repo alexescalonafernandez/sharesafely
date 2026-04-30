@@ -1,6 +1,7 @@
 using Azure;
 using Azure.Identity;
 using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 using Microsoft.Extensions.Options;
 
 namespace ShareSafely.Web.Uploads.Storage.Azure;
@@ -67,7 +68,16 @@ public class AzureBlobStorageService : IFileStorageService
             // Upload the file stream asynchronously
             using (var stream = file.OpenReadStream())
             {
-                await blobClient.UploadAsync(stream, overwrite: true, cancellationToken);
+                await blobClient.UploadAsync(
+                    stream,
+                    new BlobUploadOptions
+                    {
+                        HttpHeaders = new BlobHttpHeaders
+                        {
+                            ContentType = file.ContentType
+                        }
+                    },
+                    cancellationToken);
             }
 
             // Build the blob URI
