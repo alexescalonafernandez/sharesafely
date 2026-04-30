@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Options;
 using ShareSafely.Web.Uploads;
+using ShareSafely.Web.Uploads.Sharing;
 using ShareSafely.Web.Uploads.Storage;
 using ShareSafely.Web.Uploads.Storage.Azure;
 using ShareSafely.Web.Uploads.Storage.Local;
@@ -20,6 +21,10 @@ builder.Services.Configure<AzureStorageOptions>(
 
 builder.Services.Configure<StorageOptions>(
     builder.Configuration.GetSection("Storage")
+);
+
+builder.Services.Configure<ShareLinkOptions>(
+    builder.Configuration.GetSection("ShareLinks")
 );
 
 builder.Services.AddSingleton<FileUploadValidator>();
