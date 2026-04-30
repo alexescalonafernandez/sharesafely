@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Options;
 using ShareSafely.Web.Uploads;
 using ShareSafely.Web.Uploads.Sharing;
+using ShareSafely.Web.Uploads.Sharing.Azure;
 using ShareSafely.Web.Uploads.Storage;
 using ShareSafely.Web.Uploads.Storage.Azure;
 using ShareSafely.Web.Uploads.Storage.Local;
@@ -43,6 +44,8 @@ builder.Services.AddScoped<IFileStorageService>(sp =>
         _ => throw new InvalidOperationException($"Unsupported storage provider: {storageOptions.Provider}")
     };
 });
+
+builder.Services.AddScoped<IShareLinkService, AzureBlobSasShareLinkService>();
 
 var app = builder.Build();
 
