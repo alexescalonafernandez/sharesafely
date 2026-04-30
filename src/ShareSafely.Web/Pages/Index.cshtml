@@ -50,6 +50,42 @@
                         </div>
                     }
 
+                    <!-- Share Link Errors -->
+                    @if (Model.ShareLinkErrors.Any())
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>Share Link Error:</strong>
+                            <ul class="mb-0 mt-2">
+                                @foreach (var error in Model.ShareLinkErrors)
+                                {
+                                    <li>@error</li>
+                                }
+                            </ul>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+
+                    <!-- Share Link Display -->
+                    @if (!string.IsNullOrEmpty(Model.ShareUrl) && Model.ExpiresOn.HasValue)
+                    {
+                        <div class="card border-success mb-4">
+                            <div class="card-header bg-success text-white">
+                                <strong>Share Link Ready</strong>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text"><strong>Share URL:</strong></p>
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" value="@Model.ShareUrl" readonly>
+                                    <button class="btn btn-outline-secondary" type="button" onclick="navigator.clipboard.writeText('@Model.ShareUrl')">Copy</button>
+                                </div>
+                                <p class="card-text mb-0">
+                                    <strong>Expires:</strong> 
+                                    @Model.ExpiresOn.Value.ToString("g")
+                                </p>
+                            </div>
+                        </div>
+                    }
+
                     <!-- Upload Form -->
                     <form method="post" enctype="multipart/form-data">
                         <div class="mb-3">
