@@ -486,3 +486,6 @@ $RECYCLE.BIN/
 # ShareSafely local uploaded files
 src/ShareSafely.Web/App_Data/uploads/*
 !src/ShareSafely.Web/App_Data/uploads/.gitkeep
+
+# Azure CLI scripts
+*.azcli
