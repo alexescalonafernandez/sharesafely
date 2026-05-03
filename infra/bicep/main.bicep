@@ -118,3 +118,19 @@ resource webAppSettings 'Microsoft.Web/sites/config@2023-12-01' = {
     Upload__LocalStoragePath: localStoragePath
   }
 }
+
+var storageBlobDataContributorRoleId = 'ba92f5b4-2d11-453d-a403-e96b0029c9fe'
+var storageBlobDataContributorRoleDefinitionId = subscriptionResourceId(
+  'Microsoft.Authorization/roleDefinitions', 
+  storageBlobDataContributorRoleId
+)
+
+resource webAppStorageBlobDataContributorRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
+  name: guid(storageAccount.id, webApp.name, storageBlobDataContributorRoleDefinitionId)
+  scope: storageAccount
+  properties: {
+    roleDefinitionId: storageBlobDataContributorRoleDefinitionId
+    principalId: webApp.identity.principalId
+    principalType: 'ServicePrincipal'
+  }
+}
