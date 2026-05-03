@@ -125,7 +125,7 @@ var storageBlobDataContributorRoleDefinitionId = subscriptionResourceId(
   storageBlobDataContributorRoleId
 )
 
-resource webAppStorageBlobDataContributorRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
+resource webAppStorageBlobDataContributorRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   name: guid(storageAccount.id, webApp.name, storageBlobDataContributorRoleDefinitionId)
   scope: storageAccount
   properties: {
