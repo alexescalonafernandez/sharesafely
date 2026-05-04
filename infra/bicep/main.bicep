@@ -49,27 +49,12 @@ param applicationInsightsName string
 
 // --- resources ---
 
-resource storageAccount 'Microsoft.Storage/storageAccounts@2023-05-01' = {
-  name: storageAccountName
-  location: location
-  sku: {
-    name: 'Standard_LRS'
-  }
-  kind: 'StorageV2'
-  properties: {
-    allowBlobPublicAccess: false
-    minimumTlsVersion: 'TLS1_2'
-    supportsHttpsTrafficOnly: true
-    accessTier: 'Hot'
-  }
-}
-
-resource uploadsContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2023-05-01' = {
-  name: '${storageAccount.name}/default/${blobContainerName}'
-  properties: {
-    publicAccess: 'None'
-    defaultEncryptionScope: '$account-encryption-key'
-    denyEncryptionScopeOverride: false
+module storage './modules/storage.bicep' = {
+  name: 'storage'
+  params: {
+    location: location
+    storageAccountName: storageAccountName
+    blobContainerName: blobContainerName
   }
 }
 
@@ -124,7 +109,7 @@ resource webAppSettings 'Microsoft.Web/sites/config@2023-12-01' = {
   name: 'appsettings'
   properties: {
     Storage__Provider: storageProvider
-    AzureStorage__AccountName: storageAccount.name
+    AzureStorage__AccountName: storage.outputs.storageAccountName
     AzureStorage__BlobContainerName: blobContainerName
     ShareLinks__ExpirationMinutes: string(shareLinkExpirationMinutes)
     Upload__MaxFileSizeBytes: string(maxFileSizeBytes)
@@ -144,9 +129,14 @@ var storageBlobDataContributorRoleDefinitionId = subscriptionResourceId(
   storageBlobDataContributorRoleId
 )
 
+
+resource storageAccountForRbac 'Microsoft.Storage/storageAccounts@2023-05-01' existing = {
+  name: storageAccountName
+}
+
 resource webAppStorageBlobDataContributorRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(storageAccount.id, webApp.name, storageBlobDataContributorRoleDefinitionId)
-  scope: storageAccount
+  name: guid(storageAccountForRbac.id, webApp.name, storageBlobDataContributorRoleDefinitionId)
+  scope: storageAccountForRbac
   properties: {
     roleDefinitionId: storageBlobDataContributorRoleDefinitionId
     principalId: webApp.identity.principalId
