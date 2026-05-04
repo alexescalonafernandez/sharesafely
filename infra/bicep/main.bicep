@@ -1,3 +1,5 @@
+// --- params ---
+
 targetScope = 'resourceGroup'
 
 @description('Azure region for all ShareSafely resources.')
@@ -42,6 +44,10 @@ param allowedExtensions array = [
 @description('Local storage path used only when local provider is selected.')
 param localStoragePath string = 'App_Data/uploads'
 
+@description('Application Insights resource name.')
+param applicationInsightsName string
+
+// --- resources ---
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2023-05-01' = {
   name: storageAccountName
@@ -83,10 +89,22 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2023-12-01' = {
   }
 }
 
+resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
+  name: applicationInsightsName
+  location: location
+  kind: 'web'
+  properties: {
+    Application_Type: 'web'
+  }
+}
+
 resource webApp 'Microsoft.Web/sites@2023-12-01' = {
   name: webAppName
   location: location
   kind: 'app,linux'
+  tags: {
+    'hidden-link: /app-insights-resource-id': appInsights.id
+  }
   identity: {
     type: 'SystemAssigned'
   }
@@ -116,6 +134,7 @@ resource webAppSettings 'Microsoft.Web/sites/config@2023-12-01' = {
     Upload__AllowedExtensions__3: allowedExtensions[3]
     Upload__AllowedExtensions__4: allowedExtensions[4]
     Upload__LocalStoragePath: localStoragePath
+    APPLICATIONINSIGHTS_CONNECTION_STRING: appInsights.properties.ConnectionString
   }
 }
 

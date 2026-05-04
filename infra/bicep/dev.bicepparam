@@ -18,3 +18,4 @@ param allowedExtensions = [
   '.jpeg'
 ]
 param localStoragePath = 'App_Data/uploads'
+param applicationInsightsName = 'appi-sharesafely-dev-we-01'
