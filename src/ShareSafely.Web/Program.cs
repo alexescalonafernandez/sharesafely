@@ -11,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddApplicationInsightsTelemetry();
 
 builder.Services.Configure<UploadOptions>(
     builder.Configuration.GetSection("Upload")
