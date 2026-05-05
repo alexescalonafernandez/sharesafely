@@ -1,5 +1,3 @@
-// --- params ---
-
 targetScope = 'resourceGroup'
 
 @description('Azure region for all ShareSafely resources.')
@@ -11,12 +9,21 @@ param environment string = 'dev'
 @description('Project name.')
 param projectName string = 'sharesafely'
 
+
+// -- storage --
 @description('Storage account name.')
 param storageAccountName string
 
 @description('Blob container name for uploaded files.')
 param blobContainerName string = 'uploads'
 
+
+// -- application insights --
+@description('Application Insights resource name.')
+param applicationInsightsName string
+
+
+// -- web app --
 @description('App Service Plan name.')
 param appServicePlanName string
 
@@ -44,11 +51,8 @@ param allowedExtensions array = [
 @description('Local storage path used only when local provider is selected.')
 param localStoragePath string = 'App_Data/uploads'
 
-@description('Application Insights resource name.')
-param applicationInsightsName string
 
 // --- modules ---
-
 module storage './modules/storage.bicep' = {
   name: 'storage'
   params: {
@@ -83,25 +87,11 @@ module webapp './modules/webapp.bicep' = {
   }
 }
 
-// --- resources ---
-
-var storageBlobDataContributorRoleId = 'ba92f5b4-2d11-453d-a403-e96b0029c9fe'
-var storageBlobDataContributorRoleDefinitionId = subscriptionResourceId(
-  'Microsoft.Authorization/roleDefinitions', 
-  storageBlobDataContributorRoleId
-)
-
-
-resource storageAccountForRbac 'Microsoft.Storage/storageAccounts@2023-05-01' existing = {
-  name: storageAccountName
-}
-
-resource webAppStorageBlobDataContributorRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(storageAccountForRbac.id, webAppName, storageBlobDataContributorRoleDefinitionId)
-  scope: storageAccountForRbac
-  properties: {
-    roleDefinitionId: storageBlobDataContributorRoleDefinitionId
-    principalId: webapp.outputs.webAppPrincipalId
-    principalType: 'ServicePrincipal'
+module rbac './modules/rbac.bicep' = {
+  name: 'rbac'
+  params: {
+    storageAccountName: storageAccountName
+    webAppName: webAppName
+    webAppPrincipalId: webapp.outputs.webAppPrincipalId
   }
 }
