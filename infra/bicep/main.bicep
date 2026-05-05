@@ -66,67 +66,24 @@ module monitoring './modules/monitoring.bicep' = {
   }
 }
 
+module webapp './modules/webapp.bicep' = {
+  name: 'webapp'
+  params: {
+    location: location
+    appServicePlanName: appServicePlanName
+    webAppName: webAppName
+    storageProvider: storageProvider
+    storageAccountName: storage.outputs.storageAccountName
+    blobContainerName: blobContainerName
+    shareLinkExpirationMinutes: shareLinkExpirationMinutes
+    maxFileSizeBytes: maxFileSizeBytes
+    allowedExtensions: allowedExtensions
+    localStoragePath: localStoragePath
+    applicationInsightsName: applicationInsightsName
+  }
+}
+
 // --- resources ---
-
-resource appServicePlan 'Microsoft.Web/serverfarms@2023-12-01' = {
-  name: appServicePlanName
-  location: location
-  sku: {
-    name: 'B1'
-    tier: 'Basic'
-    size: 'B1'
-    family: 'B'
-    capacity: 1
-  }
-  kind: 'linux'
-  properties: {
-    reserved: true
-  }
-}
-
-resource appInsights 'Microsoft.Insights/components@2020-02-02' existing = {
-  name: applicationInsightsName
-}
-
-resource webApp 'Microsoft.Web/sites@2023-12-01' = {
-  name: webAppName
-  location: location
-  kind: 'app,linux'
-  tags: {
-    'hidden-link: /app-insights-resource-id': appInsights.id
-  }
-  identity: {
-    type: 'SystemAssigned'
-  }
-  properties: {
-    serverFarmId: appServicePlan.id
-    siteConfig: {
-      linuxFxVersion: 'DOTNETCORE|8.0'
-      alwaysOn: true
-      localMySqlEnabled: false
-    }
-    httpsOnly: true
-  }
-}
-
-resource webAppSettings 'Microsoft.Web/sites/config@2023-12-01' = {
-  parent: webApp
-  name: 'appsettings'
-  properties: {
-    Storage__Provider: storageProvider
-    AzureStorage__AccountName: storage.outputs.storageAccountName
-    AzureStorage__BlobContainerName: blobContainerName
-    ShareLinks__ExpirationMinutes: string(shareLinkExpirationMinutes)
-    Upload__MaxFileSizeBytes: string(maxFileSizeBytes)
-    Upload__AllowedExtensions__0: allowedExtensions[0]
-    Upload__AllowedExtensions__1: allowedExtensions[1]
-    Upload__AllowedExtensions__2: allowedExtensions[2]
-    Upload__AllowedExtensions__3: allowedExtensions[3]
-    Upload__AllowedExtensions__4: allowedExtensions[4]
-    Upload__LocalStoragePath: localStoragePath
-    APPLICATIONINSIGHTS_CONNECTION_STRING: appInsights.properties.ConnectionString
-  }
-}
 
 var storageBlobDataContributorRoleId = 'ba92f5b4-2d11-453d-a403-e96b0029c9fe'
 var storageBlobDataContributorRoleDefinitionId = subscriptionResourceId(
@@ -140,11 +97,11 @@ resource storageAccountForRbac 'Microsoft.Storage/storageAccounts@2023-05-01' ex
 }
 
 resource webAppStorageBlobDataContributorRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(storageAccountForRbac.id, webApp.name, storageBlobDataContributorRoleDefinitionId)
+  name: guid(storageAccountForRbac.id, webAppName, storageBlobDataContributorRoleDefinitionId)
   scope: storageAccountForRbac
   properties: {
     roleDefinitionId: storageBlobDataContributorRoleDefinitionId
-    principalId: webApp.identity.principalId
+    principalId: webapp.outputs.webAppPrincipalId
     principalType: 'ServicePrincipal'
   }
 }
