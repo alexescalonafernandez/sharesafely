@@ -7,6 +7,7 @@ param projectName = 'sharesafely'
 // -- storage --
 param storageAccountName = 'stsharesafelydevwe01'
 param blobContainerName = 'uploads'
+param deleteUploadedBlobsAfterDays = 7
 
 // -- application insights --
 param applicationInsightsName = 'appi-sharesafely-dev-we-01'

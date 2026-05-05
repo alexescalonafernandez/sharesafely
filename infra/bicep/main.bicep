@@ -17,6 +17,9 @@ param storageAccountName string
 @description('Blob container name for uploaded files.')
 param blobContainerName string = 'uploads'
 
+@description('Number of days after last modification before uploaded blobs are deleted.')
+param deleteUploadedBlobsAfterDays int = 7
+
 
 // -- application insights --
 @description('Application Insights resource name.')
@@ -59,6 +62,7 @@ module storage './modules/storage.bicep' = {
     location: location
     storageAccountName: storageAccountName
     blobContainerName: blobContainerName
+    deleteUploadedBlobsAfterDays: deleteUploadedBlobsAfterDays
   }
 }
 
