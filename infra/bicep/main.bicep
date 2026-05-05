@@ -47,7 +47,7 @@ param localStoragePath string = 'App_Data/uploads'
 @description('Application Insights resource name.')
 param applicationInsightsName string
 
-// --- resources ---
+// --- modules ---
 
 module storage './modules/storage.bicep' = {
   name: 'storage'
@@ -57,6 +57,16 @@ module storage './modules/storage.bicep' = {
     blobContainerName: blobContainerName
   }
 }
+
+module monitoring './modules/monitoring.bicep' = {
+  name: 'monitoring'
+  params: {
+    location: location
+    applicationInsightsName: applicationInsightsName
+  }
+}
+
+// --- resources ---
 
 resource appServicePlan 'Microsoft.Web/serverfarms@2023-12-01' = {
   name: appServicePlanName
@@ -74,13 +84,8 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2023-12-01' = {
   }
 }
 
-resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
+resource appInsights 'Microsoft.Insights/components@2020-02-02' existing = {
   name: applicationInsightsName
-  location: location
-  kind: 'web'
-  properties: {
-    Application_Type: 'web'
-  }
 }
 
 resource webApp 'Microsoft.Web/sites@2023-12-01' = {
