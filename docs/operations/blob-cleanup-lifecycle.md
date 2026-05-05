@@ -42,7 +42,7 @@ The cleanup threshold is parameterized via:
 
 Current dev value:
 
-- `infra/bicep/environments/dev.bicepparam`: `deleteUploadedBlobsAfterDays = 7`
+- `infra/bicep/dev.bicepparam`: `deleteUploadedBlobsAfterDays = 7`
 
 This enables environment-specific retention tuning without changing module logic.
 
