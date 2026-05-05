@@ -26,6 +26,29 @@ The following setup is currently manual and must be done outside source control:
 4. GitHub Environment (`dev`)
 5. GitHub Environment secrets and variables
 
+## 3a) Azure-side helper scripts
+The repository now includes PowerShell helper scripts that automate and validate the **Azure-side** OIDC bootstrap steps:
+
+- [scripts/azure/bootstrap-oidc.ps1](https://github.com/alexescalonafernandez/sharesafely/blob/main/scripts/azure/bootstrap-oidc.ps1)
+- [scripts/azure/validate-oidc-bootstrap.ps1](https://github.com/alexescalonafernandez/sharesafely/blob/main/scripts/azure/validate-oidc-bootstrap.ps1)
+
+These scripts:
+- Use Azure CLI from PowerShell.
+- Automate/validate App Registration, Service Principal, federated credential, and Web App-scoped RBAC.
+- Do **not** automate GitHub Environment creation.
+- Do **not** automate GitHub Environment secrets/variables.
+- Do **not** create publish profiles, client secrets, or stored credentials.
+
+Example usage:
+
+```bash
+pwsh ./scripts/azure/bootstrap-oidc.ps1
+pwsh ./scripts/azure/validate-oidc-bootstrap.ps1
+```
+
+Safety behavior note:
+- If a federated credential already exists with the same name but different issuer/subject/audience values, bootstrap fails intentionally instead of overwriting silently.
+
 ## 4) Azure identity setup
 Use Azure CLI and placeholders where needed.
 
@@ -159,9 +182,10 @@ After bootstrap, validate:
 - Keep RBAC scoped to the Web App resource for deployment needs.
 
 ## 12) What is not automated yet
-- OIDC bootstrap is **not** fully automated as Infrastructure as Code yet.
-- GitHub Environment creation is manual.
-- GitHub Environment secrets and variables are manual.
+- Azure-side OIDC bootstrap is now script-assisted via `scripts/azure/bootstrap-oidc.ps1` and `scripts/azure/validate-oidc-bootstrap.ps1`.
+- GitHub Environment creation is still manual.
+- GitHub Environment secrets and variables are still manual.
+- Full end-to-end bootstrap is not yet one-click.
 - GitHub secrets/variables are **not** managed by Bicep.
 
 ## 13) Future automation options
