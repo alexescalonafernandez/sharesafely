@@ -20,6 +20,8 @@ These documents capture ShareSafely deployment, infrastructure-as-code (IaC), mo
 - [infra/bicep/modules/webapp.bicep](https://github.com/alexescalonafernandez/sharesafely/blob/main/infra/bicep/modules/webapp.bicep)
 - [infra/bicep/modules/rbac.bicep](https://github.com/alexescalonafernandez/sharesafely/blob/main/infra/bicep/modules/rbac.bicep)
 - [.github/workflows/deploy-webapp.yml](https://github.com/alexescalonafernandez/sharesafely/blob/main/.github/workflows/deploy-webapp.yml)
+- [scripts/azure/bootstrap-oidc.ps1](https://github.com/alexescalonafernandez/sharesafely/blob/main/scripts/azure/bootstrap-oidc.ps1)
+- [scripts/azure/validate-oidc-bootstrap.ps1](https://github.com/alexescalonafernandez/sharesafely/blob/main/scripts/azure/validate-oidc-bootstrap.ps1)
 - [Issue #8](https://github.com/alexescalonafernandez/sharesafely/issues/8)
 
 > These notes are operational documentation for a dev/demo portfolio project and are not production runbooks.
