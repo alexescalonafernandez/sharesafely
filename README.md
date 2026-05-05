@@ -3,7 +3,7 @@
 ## 1) Project overview
 ShareSafely is a .NET 8 ASP.NET Core Razor Pages application built as an Azure cloud engineering portfolio project. It demonstrates secure file sharing and an end-to-end Azure delivery workflow using modern identity-first and infrastructure-as-code practices.
 
-The project is inspired by the ShareSafely practice brief from `cloud-engineering-projects/az-104/sharesafely.md`, implemented here with a security model that avoids storage account keys and connection strings for Blob access.
+The project is inspired by the ShareSafely practice brief from [cloud-engineering-projects/az-104/sharesafely.md](https://github.com/alexescalonafernandez/cloud-engineering-projects/blob/main/az-104/sharesafely.md), implemented here with a security model that avoids storage account keys and connection strings for Blob access.
 
 ## 2) Live demo
 ShareSafely is currently deployed to Azure App Service:
