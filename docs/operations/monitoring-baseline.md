@@ -42,7 +42,7 @@ ShareSafely uses **explicit SDK instrumentation** in the ASP.NET Core app.
 
 Implemented changes:
 - Package reference added: `Microsoft.ApplicationInsights.AspNetCore`
-- Service registration in `Program.cs`:
+- Service registration in [`Program.cs`](https://github.com/alexescalonafernandez/sharesafely/blob/main/src/ShareSafely.Web/Program.cs):
   - `builder.Services.AddApplicationInsightsTelemetry();`
 
 Important operational note:
@@ -51,7 +51,8 @@ Important operational note:
 - ShareSafely uses explicit SDK instrumentation; therefore, **Application Insights Logs (KQL) are the source of truth**.
 
 ## 6. Bicep-managed monitoring resources
-Monitoring baseline resources are now managed by Bicep:
+Monitoring baseline resources are now managed by Bicep (notably [`infra/bicep/modules/monitoring.bicep`](https://github.com/alexescalonafernandez/sharesafely/blob/main/infra/bicep/modules/monitoring.bicep) and [`infra/bicep/modules/webapp.bicep`](https://github.com/alexescalonafernandez/sharesafely/blob/main/infra/bicep/modules/webapp.bicep)):
+
 - `Microsoft.Insights/components` (Application Insights)
 - Web App application setting for `APPLICATIONINSIGHTS_CONNECTION_STRING`
 - Web App hidden-link tag preserved:

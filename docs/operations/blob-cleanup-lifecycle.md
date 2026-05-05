@@ -31,7 +31,7 @@ For dev baseline, this is configured as **7 days since last modification**.
 ## 5. Bicep implementation
 The lifecycle management policy is defined in:
 
-- `infra/bicep/modules/storage.bicep`
+- [`infra/bicep/modules/storage.bicep`](https://github.com/alexescalonafernandez/sharesafely/blob/main/infra/bicep/modules/storage.bicep)
 
 The rule targets uploaded blobs in the private `uploads` container path (`uploads/`).
 
@@ -42,7 +42,7 @@ The cleanup threshold is parameterized via:
 
 Current dev value:
 
-- `infra/bicep/dev.bicepparam`: `deleteUploadedBlobsAfterDays = 7`
+- [`infra/bicep/dev.bicepparam`](https://github.com/alexescalonafernandez/sharesafely/blob/main/infra/bicep/dev.bicepparam): `deleteUploadedBlobsAfterDays = 7`
 
 This enables environment-specific retention tuning without changing module logic.
 

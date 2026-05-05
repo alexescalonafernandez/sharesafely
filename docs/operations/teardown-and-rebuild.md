@@ -19,6 +19,7 @@ Current Azure resources for the ShareSafely dev/demo environment:
 
 Infrastructure-as-Code and deployment references:
 
+- Operational docs index: [`docs/operations/README.md`](https://github.com/alexescalonafernandez/sharesafely/blob/main/docs/operations/README.md)
 - Bicep entry point: [`infra/bicep/main.bicep`](https://github.com/alexescalonafernandez/sharesafely/blob/main/infra/bicep/main.bicep)
 - Bicep parameter file: [`infra/bicep/dev.bicepparam`](https://github.com/alexescalonafernandez/sharesafely/blob/main/infra/bicep/dev.bicepparam)
 - GitHub Actions workflow: [`/.github/workflows/deploy-webapp.yml`](https://github.com/alexescalonafernandez/sharesafely/blob/main/.github/workflows/deploy-webapp.yml)

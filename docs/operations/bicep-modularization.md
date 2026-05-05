@@ -5,15 +5,15 @@ B8.0 completed an Infrastructure-as-Code (IaC) refactor of the existing Azure Bi
 
 ## 2. Before and after structure
 **Before (pre-B8.0):**
-- `infra/bicep/main.bicep` contained most resource definitions in one file.
+- [`infra/bicep/main.bicep`](https://github.com/alexescalonafernandez/sharesafely/blob/main/infra/bicep/main.bicep) contained most resource definitions in one file.
 
 **After (B8.0):**
-- `infra/bicep/main.bicep`
-- `infra/bicep/dev.bicepparam`
-- `infra/bicep/modules/storage.bicep`
-- `infra/bicep/modules/monitoring.bicep`
-- `infra/bicep/modules/webapp.bicep`
-- `infra/bicep/modules/rbac.bicep`
+- [`infra/bicep/main.bicep`](https://github.com/alexescalonafernandez/sharesafely/blob/main/infra/bicep/main.bicep)
+- [`infra/bicep/dev.bicepparam`](https://github.com/alexescalonafernandez/sharesafely/blob/main/infra/bicep/dev.bicepparam)
+- [`infra/bicep/modules/storage.bicep`](https://github.com/alexescalonafernandez/sharesafely/blob/main/infra/bicep/modules/storage.bicep)
+- [`infra/bicep/modules/monitoring.bicep`](https://github.com/alexescalonafernandez/sharesafely/blob/main/infra/bicep/modules/monitoring.bicep)
+- [`infra/bicep/modules/webapp.bicep`](https://github.com/alexescalonafernandez/sharesafely/blob/main/infra/bicep/modules/webapp.bicep)
+- [`infra/bicep/modules/rbac.bicep`](https://github.com/alexescalonafernandez/sharesafely/blob/main/infra/bicep/modules/rbac.bicep)
 
 The structure change is an internal refactor to improve separation of concerns.
 

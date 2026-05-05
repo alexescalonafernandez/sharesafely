@@ -4,7 +4,7 @@
 This document records the **B6.0 operational baseline** for deploying ShareSafely to Azure App Service using **GitHub Actions + Azure OIDC federated identity**. It captures the current workflow, required environment configuration, manual bootstrap steps, and practical troubleshooting guidance.
 
 ## 2. Workflow overview
-Workflow file: `.github/workflows/deploy-webapp.yml`  
+Workflow file: [`.github/workflows/deploy-webapp.yml`](https://github.com/alexescalonafernandez/sharesafely/blob/main/.github/workflows/deploy-webapp.yml)  
 Workflow name: `Deploy ShareSafely Web App`
 
 Triggers:
@@ -122,10 +122,10 @@ Not part of this B6.0 baseline:
 - Monitoring and alerting baseline
 
 ## 12. Related backlog
-- Issue #8: **Track OIDC bootstrap automation and documentation**
+- [Issue #8](https://github.com/alexescalonafernandez/sharesafely/issues/8): **Track OIDC bootstrap automation and documentation**
 
 This issue tracks future improvements for documenting and automating today’s manual OIDC bootstrap process.
 
 ## 13. Next milestone
 Recommended next step after B6.0:
-- Automate/document the OIDC bootstrap path (Issue #8), then extend deployment automation toward end-to-end infra + app delivery while preserving OIDC + least-privilege RBAC.
+- Automate/document the OIDC bootstrap path ([Issue #8](https://github.com/alexescalonafernandez/sharesafely/issues/8)), then extend deployment automation toward end-to-end infra + app delivery while preserving OIDC + least-privilege RBAC.

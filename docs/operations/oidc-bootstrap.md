@@ -3,12 +3,12 @@
 ## 1) Purpose
 This document explains the **manual bootstrap** required so the ShareSafely GitHub Actions workflow can authenticate to Azure using OpenID Connect (OIDC) and deploy to the development Web App.
 
-It exists to make the current setup reproducible and transparent while automation work is tracked in Issue #8.
+It exists to make the current setup reproducible and transparent while automation work is tracked in [Issue #8](https://github.com/alexescalonafernandez/sharesafely/issues/8).
 
 ## 2) What is already versioned
 The deployment pipeline is already committed in:
 
-- `.github/workflows/deploy-webapp.yml`
+- [`.github/workflows/deploy-webapp.yml`](https://github.com/alexescalonafernandez/sharesafely/blob/main/.github/workflows/deploy-webapp.yml)
 
 That workflow already defines:
 
@@ -173,4 +173,4 @@ Potential follow-up options:
 4. Evaluate GitHub API/CLI automation for environment variable/secrets provisioning (while keeping secret values outside source control).
 
 ## 14) Related issue
-- Issue #8 - Track OIDC bootstrap automation and documentation
+- [Issue #8](https://github.com/alexescalonafernandez/sharesafely/issues/8) - Track OIDC bootstrap automation and documentation

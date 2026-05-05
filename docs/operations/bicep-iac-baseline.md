@@ -7,8 +7,8 @@ This document describes the completed B5.0 milestone where ShareSafely infrastru
 Bicep files are located under:
 
 - `infra/bicep/`
-- Main template: `infra/bicep/main.bicep`
-- Development parameters: `infra/bicep/dev.bicepparam`
+- Main template: [`infra/bicep/main.bicep`](https://github.com/alexescalonafernandez/sharesafely/blob/main/infra/bicep/main.bicep)
+- Development parameters: [`infra/bicep/dev.bicepparam`](https://github.com/alexescalonafernandez/sharesafely/blob/main/infra/bicep/dev.bicepparam)
 
 Notes:
 - `.bicepparam` is used (not JSON parameter files).
@@ -46,7 +46,7 @@ The baseline now defines and manages:
   - Scope: Storage Account
 
 ## 5. Parameters and environment file
-Environment-specific values are supplied through `infra/bicep/dev.bicepparam`.
+Environment-specific values are supplied through [`infra/bicep/dev.bicepparam`](https://github.com/alexescalonafernandez/sharesafely/blob/main/infra/bicep/dev.bicepparam).
 
 App settings are managed by Bicep and include:
 - `Storage__Provider`

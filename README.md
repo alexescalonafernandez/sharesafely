@@ -56,12 +56,12 @@ The demo environment may be torn down and rebuilt for cost-control and portfolio
 ## 7) Infrastructure as Code
 Bicep is organized in a modular structure:
 
-- `infra/bicep/main.bicep` (orchestrator)
-- `infra/bicep/dev.bicepparam` (dev environment values)
-- `infra/bicep/modules/storage.bicep`
-- `infra/bicep/modules/monitoring.bicep`
-- `infra/bicep/modules/webapp.bicep`
-- `infra/bicep/modules/rbac.bicep`
+- [`infra/bicep/main.bicep`](https://github.com/alexescalonafernandez/sharesafely/blob/main/infra/bicep/main.bicep) (orchestrator)
+- [`infra/bicep/dev.bicepparam`](https://github.com/alexescalonafernandez/sharesafely/blob/main/infra/bicep/dev.bicepparam) (dev environment values)
+- [`infra/bicep/modules/storage.bicep`](https://github.com/alexescalonafernandez/sharesafely/blob/main/infra/bicep/modules/storage.bicep)
+- [`infra/bicep/modules/monitoring.bicep`](https://github.com/alexescalonafernandez/sharesafely/blob/main/infra/bicep/modules/monitoring.bicep)
+- [`infra/bicep/modules/webapp.bicep`](https://github.com/alexescalonafernandez/sharesafely/blob/main/infra/bicep/modules/webapp.bicep)
+- [`infra/bicep/modules/rbac.bicep`](https://github.com/alexescalonafernandez/sharesafely/blob/main/infra/bicep/modules/rbac.bicep)
 
 Notes:
 - Application settings are managed through Bicep.
@@ -70,7 +70,7 @@ Notes:
 ## 8) CI/CD deployment
 Deployment workflow:
 
-- Workflow file: `.github/workflows/deploy-webapp.yml`
+- Workflow file: [`.github/workflows/deploy-webapp.yml`](https://github.com/alexescalonafernandez/sharesafely/blob/main/.github/workflows/deploy-webapp.yml)
 - Triggers: `push` to `main` and `workflow_dispatch`
 - Uses GitHub environment: `dev`
 - Authenticates with `azure/login` using OIDC
@@ -116,11 +116,14 @@ Local provider/local upload is supported for development workflows.
 - `.github/workflows` — CI/CD workflows
 
 ## 12) Operational documentation
-- [Bicep IaC baseline](docs/operations/bicep-iac-baseline.md)
-- [GitHub Actions OIDC deployment](docs/operations/github-actions-oidc-deployment.md)
-- [Monitoring baseline](docs/operations/monitoring-baseline.md)
-- [Bicep modularization](docs/operations/bicep-modularization.md)
-- [Blob cleanup lifecycle](docs/operations/blob-cleanup-lifecycle.md)
+- [Operational documentation index](https://github.com/alexescalonafernandez/sharesafely/blob/main/docs/operations/README.md)
+- [Bicep IaC baseline](https://github.com/alexescalonafernandez/sharesafely/blob/main/docs/operations/bicep-iac-baseline.md)
+- [GitHub Actions OIDC deployment](https://github.com/alexescalonafernandez/sharesafely/blob/main/docs/operations/github-actions-oidc-deployment.md)
+- [Monitoring baseline](https://github.com/alexescalonafernandez/sharesafely/blob/main/docs/operations/monitoring-baseline.md)
+- [Bicep modularization](https://github.com/alexescalonafernandez/sharesafely/blob/main/docs/operations/bicep-modularization.md)
+- [Blob cleanup lifecycle](https://github.com/alexescalonafernandez/sharesafely/blob/main/docs/operations/blob-cleanup-lifecycle.md)
+- [OIDC bootstrap](https://github.com/alexescalonafernandez/sharesafely/blob/main/docs/operations/oidc-bootstrap.md)
+- [Teardown and rebuild strategy](https://github.com/alexescalonafernandez/sharesafely/blob/main/docs/operations/teardown-and-rebuild.md)
 
 ## 13) Completed milestones
 - B1.0 Local upload workflow
