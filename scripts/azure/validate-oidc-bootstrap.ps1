@@ -1,6 +1,3 @@
-Set-StrictMode -Version Latest
-$ErrorActionPreference = 'Stop'
-
 param(
     [string]$ResourceGroupName = "rg-sharesafely-dev-we-01",
     [string]$WebAppName = "app-sharesafely-dev-we-01",
@@ -8,9 +5,12 @@ param(
     [string]$GitHubRepo = "sharesafely",
     [string]$GitHubEnvironment = "dev",
     [string]$AppRegistrationName = "sp-sharesafely-github-actions-dev",
-    [string]$FederatedCredentialName = "github-oidc-dev",
+    [string]$FederatedCredentialName = "github-dev-environment",
     [string]$RoleName = "Contributor"
 )
+
+Set-StrictMode -Version Latest
+$ErrorActionPreference = 'Stop'
 
 function Write-Step {
     param([string]$Message)
@@ -52,21 +52,34 @@ $expectedAudience = "api://AzureADTokenExchange"
 
 Write-Step "Running Azure-side validation checks"
 
-$webAppId = Get-AzCliValue "az webapp show --resource-group `"$ResourceGroupName`" --name `"$WebAppName`" --query id -o tsv"
+$webAppId = Get-AzCliValue @'
+az webapp show `
+  --resource-group "$ResourceGroupName" `
+  --name "$WebAppName" `
+  --query id -o tsv
+'@
 Add-Check -Name "Web App exists" -Passed ([bool]$webAppId) -Detail "Web App: $WebAppName"
 
-$appId = Get-AzCliValue "az ad app list --display-name `"$AppRegistrationName`" --query `[0].appId` -o tsv"
+$appId = Get-AzCliValue @'
+az ad app list `
+  --display-name "$AppRegistrationName" `
+  --query "[0].appId" -o tsv
+'@
 Add-Check -Name "App Registration exists" -Passed ([bool]$appId) -Detail "Display name: $AppRegistrationName"
 
 $spObjectId = ""
 if ($appId) {
-    $spObjectId = Get-AzCliValue "az ad sp list --filter `"appId eq '$appId'`" --query `[0].id` -o tsv"
+    $spObjectId = Get-AzCliValue @'
+az ad sp list `
+  --filter "appId eq '$appId'" `
+  --query "[0].id" -o tsv
+'@
 }
 Add-Check -Name "Service Principal exists" -Passed ([bool]$spObjectId) -Detail "Associated to app registration"
 
 $existingFc = $null
 if ($appId) {
-    $fcJson = Get-AzCliValue "az ad app federated-credential list --id `"$appId`" -o json"
+    $fcJson = Get-AzCliValue 'az ad app federated-credential list --id "$appId" -o json'
     $fcList = @()
     if ($fcJson) { $fcList = $fcJson | ConvertFrom-Json }
     $existingFc = $fcList | Where-Object { $_.name -eq $FederatedCredentialName }
@@ -86,13 +99,18 @@ if ($existingFc) {
 
 $rbacOk = $false
 if ($spObjectId) {
-    $rbacCount = Get-AzCliValue "az role assignment list --assignee-object-id `"$spObjectId`" --scope `"$webAppScope`" --query `[?roleDefinitionName=='$RoleName'] | length(@)` -o tsv"
+    $rbacCount = Get-AzCliValue @'
+az role assignment list `
+  --assignee-object-id "$spObjectId" `
+  --scope "$webAppScope" `
+  --query "[?roleDefinitionName=='$RoleName'] | length(@)" -o tsv
+'@
     $rbacOk = $rbacCount -ne '0'
 }
 Add-Check -Name "Contributor role assignment exists at Web App scope" -Passed $rbacOk -Detail "Scope: $webAppScope"
 
 Write-Step "Validation results"
-$failed = $checks | Where-Object { -not $_.Passed }
+$failed = @($checks | Where-Object { -not $_.Passed })
 foreach ($check in $checks) {
     if ($check.Passed) {
         Write-Host "[PASS] $($check.Name) - $($check.Detail)" -ForegroundColor Green

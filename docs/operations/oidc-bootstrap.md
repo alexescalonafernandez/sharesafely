@@ -83,7 +83,7 @@ Create a local JSON file (example name: `federated-credential.json`):
 
 ```json
 {
-  "name": "github-oidc-dev",
+  "name": "github-dev-environment",
   "issuer": "https://token.actions.githubusercontent.com",
   "subject": "repo:alexescalonafernandez/sharesafely:environment:dev",
   "description": "OIDC trust for GitHub Actions dev environment",

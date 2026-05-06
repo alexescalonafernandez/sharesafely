@@ -1,6 +1,3 @@
-Set-StrictMode -Version Latest
-$ErrorActionPreference = 'Stop'
-
 param(
     [string]$ResourceGroupName = "rg-sharesafely-dev-we-01",
     [string]$WebAppName = "app-sharesafely-dev-we-01",
@@ -8,9 +5,12 @@ param(
     [string]$GitHubRepo = "sharesafely",
     [string]$GitHubEnvironment = "dev",
     [string]$AppRegistrationName = "sp-sharesafely-github-actions-dev",
-    [string]$FederatedCredentialName = "github-oidc-dev",
+    [string]$FederatedCredentialName = "github-dev-environment",
     [string]$RoleName = "Contributor"
 )
+
+Set-StrictMode -Version Latest
+$ErrorActionPreference = 'Stop'
 
 function Write-Step {
     param([string]$Message)
@@ -49,32 +49,49 @@ $expectedIssuer = "https://token.actions.githubusercontent.com"
 $expectedAudience = "api://AzureADTokenExchange"
 
 Write-Step "Verifying Web App exists"
-$webAppId = Get-AzCliValue "az webapp show --resource-group `"$ResourceGroupName`" --name `"$WebAppName`" --query id -o tsv"
+$webAppId = Get-AzCliValue @'
+az webapp show `
+  --resource-group "$ResourceGroupName" `
+  --name "$WebAppName" `
+  --query id -o tsv
+'@
 if (-not $webAppId) {
     throw "Web App '$WebAppName' in resource group '$ResourceGroupName' was not found."
 }
 
 Write-Step "Resolving App Registration '$AppRegistrationName'"
-$appId = Get-AzCliValue "az ad app list --display-name `"$AppRegistrationName`" --query `[0].appId` -o tsv"
+$appId = Get-AzCliValue @'
+az ad app list `
+  --display-name "$AppRegistrationName" `
+  --query "[0].appId" -o tsv
+'@
 
 if (-not $appId) {
     Write-Host "App Registration not found. Creating '$AppRegistrationName'..." -ForegroundColor Yellow
-    $appId = Get-AzCliValue "az ad app create --display-name `"$AppRegistrationName`" --query appId -o tsv"
+    $appId = Get-AzCliValue @'
+az ad app create `
+  --display-name "$AppRegistrationName" `
+  --query appId -o tsv
+'@
 } else {
     Write-Host "App Registration already exists (appId hidden)." -ForegroundColor Green
 }
 
 Write-Step "Ensuring Service Principal exists"
-$spObjectId = Get-AzCliValue "az ad sp list --filter `"appId eq '$appId'`" --query `[0].id` -o tsv"
+$spObjectId = Get-AzCliValue @'
+az ad sp list `
+  --filter "appId eq '$appId'" `
+  --query "[0].id" -o tsv
+'@
 if (-not $spObjectId) {
     Write-Host "Service Principal not found. Creating..." -ForegroundColor Yellow
-    $spObjectId = Get-AzCliValue "az ad sp create --id `"$appId`" --query id -o tsv"
+    $spObjectId = Get-AzCliValue 'az ad sp create --id "$appId" --query id -o tsv'
 } else {
     Write-Host "Service Principal already exists." -ForegroundColor Green
 }
 
 Write-Step "Validating federated credential '$FederatedCredentialName'"
-$fcJson = Get-AzCliValue "az ad app federated-credential list --id `"$appId`" -o json"
+$fcJson = Get-AzCliValue 'az ad app federated-credential list --id "$appId" -o json'
 $fcList = @()
 if ($fcJson) { $fcList = $fcJson | ConvertFrom-Json }
 $existingFc = $fcList | Where-Object { $_.name -eq $FederatedCredentialName }
@@ -109,7 +126,11 @@ Refusing to overwrite existing federated credential silently.
         }
 
         $fcDefinition | ConvertTo-Json -Depth 5 | Set-Content -Path $tempFile -Encoding utf8
-        $null = Get-AzCliValue "az ad app federated-credential create --id `"$appId`" --parameters @$tempFile"
+        $null = Get-AzCliValue @'
+az ad app federated-credential create `
+  --id "$appId" `
+  --parameters @$tempFile
+'@
     }
     finally {
         if (Test-Path $tempFile) {
@@ -121,10 +142,21 @@ Refusing to overwrite existing federated credential silently.
 }
 
 Write-Step "Ensuring RBAC assignment exists"
-$rbacExists = Get-AzCliValue "az role assignment list --assignee-object-id `"$spObjectId`" --scope `"$webAppScope`" --query `[?roleDefinitionName=='$RoleName'] | length(@)` -o tsv"
+$rbacExists = Get-AzCliValue @'
+az role assignment list `
+  --assignee-object-id "$spObjectId" `
+  --scope "$webAppScope" `
+  --query "[?roleDefinitionName=='$RoleName'] | length(@)" -o tsv
+'@
 if ($rbacExists -eq '0') {
     Write-Host "Role assignment missing. Creating '$RoleName' on Web App scope..." -ForegroundColor Yellow
-    $null = Get-AzCliValue "az role assignment create --assignee-object-id `"$spObjectId`" --role `"$RoleName`" --scope `"$webAppScope`" --query id -o tsv"
+    $null = Get-AzCliValue @'
+az role assignment create `
+  --assignee-object-id "$spObjectId" `
+  --role "$RoleName" `
+  --scope "$webAppScope" `
+  --query id -o tsv
+'@
     Write-Host "Role assignment created." -ForegroundColor Green
 } else {
     Write-Host "Role assignment already exists." -ForegroundColor Green
