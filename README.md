@@ -124,6 +124,7 @@ Local provider/local upload is supported for development workflows.
 - [Blob cleanup lifecycle](https://github.com/alexescalonafernandez/sharesafely/blob/main/docs/operations/blob-cleanup-lifecycle.md)
 - [OIDC bootstrap](https://github.com/alexescalonafernandez/sharesafely/blob/main/docs/operations/oidc-bootstrap.md)
 - [Teardown and rebuild strategy](https://github.com/alexescalonafernandez/sharesafely/blob/main/docs/operations/teardown-and-rebuild.md)
+- [Project closure](https://github.com/alexescalonafernandez/sharesafely/blob/main/docs/project-closure.md)
 
 ## 13) Completed milestones
 - B1.0 Local upload workflow
@@ -135,9 +136,15 @@ Local provider/local upload is supported for development workflows.
 - B7.0 Monitoring baseline
 - B8.0 Bicep modularization and IaC cleanup
 - B9.0 Blob cleanup lifecycle baseline
+- B10.0 README portfolio refresh
+- B11.0 OIDC bootstrap documentation
+- B12.0 Cost, teardown and rebuild strategy
+- B13.0 Documentation navigation polish
+- B14.0 Azure-side OIDC bootstrap automation
+- B15.0 Project closure
 
 ## 14) Known limitations / future improvements
-- OIDC bootstrap setup is documented/tracked separately and is not fully automated as IaC yet.
+- Azure-side OIDC bootstrap is script-assisted; GitHub Environment/secrets/variables setup remains manual.
 - Resource Group creation is not currently handled by Bicep.
 - Key Vault is not implemented because current storage access avoids secrets; it may be introduced later if a real secret management need appears.
 - No authentication/user accounts for upload page yet.
